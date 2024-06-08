@@ -17,7 +17,7 @@ namespace proba
         private Rezultat rezultat;
         private const int boardWidth = 10;
         private const int boardHeight = 20;
-        private const int cellSize = 20;
+        private const int cellSize = 30;
         public Form1()
         {
             InitializeComponent();
@@ -27,10 +27,10 @@ namespace proba
             timer.Tick += timer1_Tick;
             timer.Start();
             this.KeyDown += new KeyEventHandler(Form1_KeyDown);
-            this.ClientSize = new Size(400, 400);
+            this.ClientSize = new Size(600, 600);
 
-            //this.BackgroundImage = Properties.Resources.slicica; // Ovde zamenite sa stvarnim imenom slike
-            //this.BackgroundImageLayout = ImageLayout.Stretch; // Prilagodite po potrebi (Stretch, Tile, Center, Zoom, None)
+            this.BackgroundImage = Properties.Resources.slicica; // Ovde zamenite sa stvarnim imenom slike
+            this.BackgroundImageLayout = ImageLayout.Center; // Prilagodite po potrebi (Stretch, Tile, Center, Zoom, None)
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -72,8 +72,7 @@ namespace proba
             Color fallenFigureColor = ColorTranslator.FromHtml("#584E66");
 
             // Crtanje pozadine
-            e.Graphics.Clear(backgroundColor);
-
+            e.Graphics.FillRectangle(new SolidBrush(backgroundColor), 0, 0, boardWidth * cellSize, boardHeight * cellSize);
             // Crtanje grida
             for (int x = 0; x <= boardWidth; x++)
             {

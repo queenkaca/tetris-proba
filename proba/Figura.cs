@@ -41,7 +41,7 @@ namespace proba
 
         public void Rotate()
         {
-            RotationIndex = (RotationIndex + 1) % Shapes.GetLength(0);
+            RotationIndex = (RotationIndex + 1) % 4;
         }
 
         protected static Color GetRandomColor()
