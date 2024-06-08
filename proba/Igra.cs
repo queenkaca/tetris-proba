@@ -110,7 +110,7 @@ namespace proba
         {
             if (CurrentFigura != null)
             {
-                CurrentFigura.Rotate();
+                CurrentFigura.Rotate(); 
                 if (!IsValidPosition(CurrentFigura))
                 {
                     // Rollback rotation
