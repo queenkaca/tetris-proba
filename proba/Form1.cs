@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Media;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -12,23 +13,22 @@ namespace proba
 {
     public partial class Form1 : Form
     {
-        Tabla tabla;
         private Igra igra;
         private Rezultat rezultat;
         private const int boardWidth = 10;
         private const int boardHeight = 20;
         private const int cellSize = 30;
+        private SoundPlayer soundPlayer;
         public Form1()
         {
             InitializeComponent();
             igra = new Igra(boardWidth, boardHeight);
-            Timer timer = new Timer();
-            timer.Interval = 500;
-            timer.Tick += timer1_Tick;
-            timer.Start();
+            timer1.Interval = 600;
+            timer1.Start();
             this.KeyDown += new KeyEventHandler(Form1_KeyDown);
             this.ClientSize = new Size(600, 600);
-
+            rezultat = new Rezultat();
+            this.Text = "Lo-Fi Tetris";
             this.BackgroundImage = Properties.Resources.lofi1; // Ovde zamenite sa stvarnim imenom slike
             this.BackgroundImageLayout = ImageLayout.Center; // Prilagodite po potrebi (Stretch, Tile, Center, Zoom, None)
         }
@@ -36,6 +36,12 @@ namespace proba
         private void Form1_Load(object sender, EventArgs e)
         {
             this.Focus();
+
+            // Initialize the SoundPlayer with the path to the audio filee
+            soundPlayer = new SoundPlayer(@"music.wav");
+
+            // Play the sound in a loop
+            soundPlayer.PlayLooping();
         }
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
@@ -60,8 +66,24 @@ namespace proba
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            igra.MoveCurrentFigureDown();
-            label5.Text = igra.CurrentScore.ToString();
+            if (!igra.IsGameOver())
+            {
+                igra.MoveCurrentFigureDown();
+                label5.Text = igra.CurrentScore.ToString();
+
+            }
+
+            else           
+            {
+                rezultat.AddScoreToList(igra.CurrentScore);
+                label3.Text = rezultat.AllScores.Max().ToString();
+                // Igra je završena, zaustavljamo tajmer
+                timer1.Stop();
+                
+
+                // Prikazujemo dugme za ponovno pokretanje
+                button1.Visible = true;
+            }
             this.Invalidate();
         }
 
@@ -129,6 +151,21 @@ namespace proba
         }
 
         private void label5_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            igra = new Igra(boardWidth, boardHeight);
+            timer1.Interval = 500;
+            timer1.Start();
+            // Ukloni dugme za ponovno pokretanje
+            button1.Visible = false;
+            this.Focus();
+        }
+
+        private void label3_Click(object sender, EventArgs e)
         {
 
         }

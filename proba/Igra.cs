@@ -121,7 +121,10 @@ namespace proba
                 }
             }
         }
-
+        public bool IsGameOver()
+        {
+            return !IsValidPosition(CurrentFigura);
+        }
         private bool IsValidPosition(Figura figure)
         {
             var shape = figure.Shape;
