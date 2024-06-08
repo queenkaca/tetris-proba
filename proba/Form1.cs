@@ -29,7 +29,7 @@ namespace proba
             this.KeyDown += new KeyEventHandler(Form1_KeyDown);
             this.ClientSize = new Size(600, 600);
 
-            this.BackgroundImage = Properties.Resources.slicica; // Ovde zamenite sa stvarnim imenom slike
+            this.BackgroundImage = Properties.Resources.lofi1; // Ovde zamenite sa stvarnim imenom slike
             this.BackgroundImageLayout = ImageLayout.Center; // Prilagodite po potrebi (Stretch, Tile, Center, Zoom, None)
         }
 
@@ -61,6 +61,7 @@ namespace proba
         private void timer1_Tick(object sender, EventArgs e)
         {
             igra.MoveCurrentFigureDown();
+            label5.Text = igra.CurrentScore.ToString();
             this.Invalidate();
         }
 
@@ -115,6 +116,21 @@ namespace proba
                     }
                 }
             }
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label6_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label5_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
