@@ -55,7 +55,7 @@ namespace proba
                     igra.MoveCurrentFigureRight();
                     break;
                 case Keys.Down:
-                    igra.MoveCurrentFigureDown();
+                    igra.PomeriTrenutnuFiguruDole();
                     break;
                 case Keys.Up:
                     igra.RotateCurrentFigure();
@@ -68,15 +68,16 @@ namespace proba
         {
             if (!igra.IsGameOver())
             {
-                igra.MoveCurrentFigureDown();
-                label5.Text = igra.CurrentScore.ToString();
+                igra.PomeriTrenutnuFiguruDole();
+                label5.Text = igra.TrenutniRezultat.ToString();
 
             }
 
             else           
             {
-                rezultat.AddScoreToList(igra.CurrentScore);
-                label3.Text = rezultat.AllScores.Max().ToString();
+                rezultat.ProveriNajRezultat(igra.TrenutniRezultat);
+                label3.Text = rezultat.NajRezultat.ToString();
+                
                 // Igra je završena, zaustavljamo tajmer
                 timer1.Stop();
                 
@@ -108,7 +109,7 @@ namespace proba
             }
 
             // Crtanje trenutnog stanja table
-            int[,] board = igra.GetBoardState();
+            int[,] board = igra.ProveriStanjeTable();
             for (int x = 0; x < boardHeight; x++)
             {
                 for (int y = 0; y < boardWidth; y++)
@@ -122,18 +123,20 @@ namespace proba
             }
 
             // Crtanje trenutne figure
-            if (igra.CurrentFigura != null)
+            if (igra.TrenutnaFigura != null)
             {
-                var shape = igra.CurrentFigura.Shape;
-                var color = igra.CurrentFigura.Color;
+                var shape = igra.TrenutnaFigura.Oblik;
+                var color = igra.TrenutnaFigura.Boja;
                 for (int x = 0; x < shape.GetLength(0); x++)
                 {
                     for (int y = 0; y < shape.GetLength(1); y++)
                     {
                         if (shape[x, y] != 0)
                         {
-                            e.Graphics.FillRectangle(new SolidBrush(color), (igra.CurrentFigura.Y + y) * cellSize, (igra.CurrentFigura.X + x) * cellSize, cellSize, cellSize);
-                            e.Graphics.DrawRectangle(new Pen(gridColor), (igra.CurrentFigura.Y + y) * cellSize, (igra.CurrentFigura.X + x) * cellSize, cellSize, cellSize);
+                            e.Graphics.FillRectangle(new SolidBrush(color), (igra.TrenutnaFigura.Y + y) * cellSize, 
+                                (igra.TrenutnaFigura.X + x) * cellSize, cellSize, cellSize);
+                            e.Graphics.DrawRectangle(new Pen(gridColor), (igra.TrenutnaFigura.Y + y) * cellSize,
+                                (igra.TrenutnaFigura.X + x) * cellSize, cellSize, cellSize);
                         }
                     }
                 }

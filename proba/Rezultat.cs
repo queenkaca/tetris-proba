@@ -8,27 +8,28 @@ namespace proba
 {
     internal class Rezultat
     {
-        public int Points { get; private set; }
-        public List<int> AllScores { get; private set; }
+        public int Poeni { get; private set; }
 
+        int najRezultat;
         public Rezultat()
         {
-            Points = 0;
-            AllScores = new List<int>();
+            Poeni = 0;
+            NajRezultat = 0;
+        }
+        public int NajRezultat
+        {
+            get { return najRezultat; }
+            set { najRezultat = value; }
+        }
+        public void DodajPoene(int points)
+        {
+            Poeni += points;
+        }
+        public void ProveriNajRezultat(int rezultat)
+        {
+            if(rezultat > NajRezultat)
+                NajRezultat = rezultat;
         }
 
-        public void AddPoints(int points)
-        {
-            Points += points;
-        }
-        public void AddScoreToList(int score)
-        {
-            AllScores.Add(score); // Dodajemo rezultat u listu rezultata
-        }
-
-        public int MaxScore()
-        {
-            return AllScores.Max(); // Vraćamo maksimalni rezultat
-        }
     }
 }

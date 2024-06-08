@@ -8,33 +8,33 @@ namespace proba
 {
     internal class Tabla
     {
-        private int[,] board;
-        private int rows;
-        private int columns;
+        private int[,] tabla;
+        private int redovi;
+        private int kolone;
 
-        public Tabla(int rows, int columns)
+        public Tabla(int redovi, int kolone)
         {
-            this.rows = rows;
-            this.columns = columns;
-            board = new int[rows, columns];
+            this.redovi = redovi;
+            this.kolone = kolone;
+            tabla = new int[redovi, kolone];
         }
 
-        public bool IsPositionValid(Figura figura, int xOffset, int yOffset)
+        public bool DaLiJePozicijaIspravna(Figura figura, int xOffset, int yOffset)
         {
-            for (int x = 0; x < figura.Shape.GetLength(0); x++)
+            for (int x = 0; x < figura.Oblik.GetLength(0); x++)
             {
-                for (int y = 0; y < figura.Shape.GetLength(1); y++)
+                for (int y = 0; y < figura.Oblik.GetLength(1); y++)
                 {
-                    if (figura.Shape[x, y] != 0)
+                    if (figura.Oblik[x, y] != 0)
                     {
-                        int boardX = figura.X + x + xOffset;
-                        int boardY = figura.Y + y + yOffset;
+                        int tablaX = figura.X + x + xOffset;
+                        int tablaY = figura.Y + y + yOffset;
 
-                        if (boardX < 0 || boardX >= rows || boardY < 0 || boardY >= columns)
+                        if (tablaX < 0 || tablaX >= redovi || tablaY < 0 || tablaY >= kolone)
                         {
                             return false;
                         }
-                        if (board[boardX, boardY] != 0)
+                        if (tabla[tablaX, tablaY] != 0)
                         {
                             return false;
                         }
@@ -44,59 +44,59 @@ namespace proba
             return true;
         }
 
-        public void AddFiguraToBoard(Figura figura)
+        public void DodajFiguruNaTablu(Figura figura)
         {
-            for (int x = 0; x < figura.Shape.GetLength(0); x++)
+            for (int x = 0; x < figura.Oblik.GetLength(0); x++)
             {
-                for (int y = 0; y < figura.Shape.GetLength(1); y++)
+                for (int y = 0; y < figura.Oblik.GetLength(1); y++)
                 {
-                    if (figura.Shape[x, y] != 0)
+                    if (figura.Oblik[x, y] != 0)
                     {
-                        board[figura.X + x, figura.Y + y] = figura.Shape[x, y];
+                        tabla[figura.X + x, figura.Y + y] = figura.Oblik[x, y];
                     }
                 }
             }
         }
 
-        public void ClearFullLines()
+        public void UkloniPuneRedove()
         {
-            for (int i = rows - 1; i >= 0; i--)
+            for (int i = redovi - 1; i >= 0; i--)
             {
-                bool isFull = true;
-                for (int j = 0; j < columns; j++)
+                bool pun = true;
+                for (int j = 0; j < kolone; j++)
                 {
-                    if (board[i, j] == 0)
+                    if (tabla[i, j] == 0)
                     {
-                        isFull = false;
+                        pun = false;
                         break;
                     }
                 }
-                if (isFull)
+                if (pun)
                 {
-                    ClearLine(i);
+                    UkloniRed(i);
                     i++;
                 }
             }
         }
 
-        private void ClearLine(int row)
+        private void UkloniRed(int red)
         {
-            for (int i = row; i > 0; i--)
+            for (int i = red; i > 0; i--)
             {
-                for (int j = 0; j < columns; j++)
+                for (int j = 0; j < kolone; j++)
                 {
-                    board[i, j] = board[i - 1, j];
+                    tabla[i, j] = tabla[i - 1, j];
                 }
             }
-            for (int j = 0; j < columns; j++)
+            for (int j = 0; j < kolone; j++)
             {
-                board[0, j] = 0;
+                tabla[0, j] = 0;
             }
         }
 
         public int[,] GetBoard()
         {
-            return board;
+            return tabla;
         }
     }
 }

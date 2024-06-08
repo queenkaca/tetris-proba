@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.ExceptionServices;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,42 +11,42 @@ namespace proba
 {
     public abstract class Figura
     {
-        public int[,,] Shapes { get; set; } // 3D matrix for all rotations
-        public int RotationIndex { get; set; } // Current rotation
+        public int[,,] Figure { get; set; } // 3D matrica za sve rotacije
+        public int IndeksRotacije { get; set; } // Trenutna rotacija
         public int X { get; set; }
         public int Y { get; set; }
-        public Color Color { get; set; } // Color of the figure
+        public Color Boja { get; set; } // Boja figure
 
         public Figura()
         {
-            RotationIndex = 0;
+            IndeksRotacije = 0;
             X = 0;
             Y = 0;
-            Color = GetRandomColor();
+            Boja = BirajRandomBoju();
         }
-        public int[,] Shape
+        public int[,] Oblik
         {
             get
             {
-                int size = Shapes.GetLength(1);
-                int[,] shape = new int[size, size];
-                for (int i = 0; i < size; i++)
+                int velicina = Figure.GetLength(1);
+                int[,] oblik = new int[velicina, velicina];
+                for (int i = 0; i < velicina; i++)
                 {
-                    for (int j = 0; j < size; j++)
+                    for (int j = 0; j < velicina; j++)
                     {
-                        shape[i, j] = Shapes[RotationIndex, i, j];
+                        oblik[i, j] = Figure[IndeksRotacije, i, j];
                     }
                 }
-                return shape;
+                return oblik;
             }
         }
 
         public void Rotate()
         {
-            RotationIndex = (RotationIndex + 1) % 4;
+            IndeksRotacije = (IndeksRotacije + 1) % 4;
         }
 
-        protected static Color GetRandomColor()
+        protected static Color BirajRandomBoju()
         {
             Random rand = new Random();
             return Color.FromArgb(rand.Next(256), rand.Next(256), rand.Next(256));
@@ -54,7 +56,7 @@ namespace proba
     {
         public FiguraI() : base()
         {
-            Shapes = new int[4, 4, 4]
+            Figure = new int[4, 4, 4]
             {
             {
                 { 0, 0, -1, 0 },
@@ -81,10 +83,10 @@ namespace proba
                 { 0, 0, 0, 0 }
             }
             };
-            RotationIndex = 0;
+            IndeksRotacije = 0;
             X = 0;
             Y = 0;
-            Color = GetRandomColor();
+            Boja = BirajRandomBoju();
         }
     }
 
@@ -92,7 +94,7 @@ namespace proba
     {
         public FiguraJ() : base()
         {
-            Shapes = new int[4, 4, 4]
+            Figure = new int[4, 4, 4]
             {
             {
                 { -1, 0, 0, 0 },
@@ -119,10 +121,10 @@ namespace proba
                 { 0, 0, 0, 0 }
             }
             };
-            RotationIndex = 0;
+            IndeksRotacije = 0;
             X = 0;
             Y = 0;
-            Color = GetRandomColor();
+            Boja = BirajRandomBoju();
         }
     }
 
@@ -130,7 +132,7 @@ namespace proba
     {
         public FiguraL() : base()
         {
-            Shapes = new int[4, 4, 4]
+            Figure = new int[4, 4, 4]
             {
             {
                 { 0, 0, -1, 0 },
@@ -157,10 +159,10 @@ namespace proba
                 { 0, 0, 0, 0 }
             }
             };
-            RotationIndex = 0;
+            IndeksRotacije = 0;
             X = 0;
             Y = 0;
-            Color = GetRandomColor();
+            Boja = BirajRandomBoju();
         }
     }
 
@@ -168,7 +170,7 @@ namespace proba
     {
         public FiguraO() : base()
         {
-            Shapes = new int[4, 4, 4]
+            Figure = new int[4, 4, 4]
             {
             {
                 { 0, 0, 0, 0 },
@@ -195,10 +197,10 @@ namespace proba
                 { 0, 0, 0, 0 }
             }
             };
-            RotationIndex = 0;
+            IndeksRotacije = 0;
             X = 0;
             Y = 0;
-            Color = GetRandomColor();
+            Boja = BirajRandomBoju();
         }
     }
 
@@ -206,7 +208,7 @@ namespace proba
     {
         public FiguraS() : base()
         {
-            Shapes = new int[4, 4, 4]
+            Figure = new int[4, 4, 4]
             {
             {
                 { 0, -1, -1, 0 },
@@ -233,10 +235,10 @@ namespace proba
                 { 0, 0, 0, 0 }
             }
             };
-            RotationIndex = 0;
+            IndeksRotacije = 0;
             X = 0;
             Y = 0;
-            Color = GetRandomColor();
+            Boja = BirajRandomBoju();
         }
     }
 
@@ -244,7 +246,7 @@ namespace proba
     {
         public FiguraT() : base()
         {
-            Shapes = new int[4, 4, 4]
+            Figure = new int[4, 4, 4]
             {
             {
                 { 0, -1, 0, 0 },
@@ -271,10 +273,10 @@ namespace proba
                 { 0, 0, 0, 0 }
             }
             };
-            RotationIndex = 0;
+            IndeksRotacije = 0;
             X = 0;
             Y = 0;
-            Color = GetRandomColor();
+            Boja = BirajRandomBoju();
         }
     }
 
@@ -282,7 +284,7 @@ namespace proba
     {
         public FiguraZ() : base()
         {
-            Shapes = new int[4, 4, 4]
+            Figure = new int[4, 4, 4]
             {
             {
                 { -1, -1, 0, 0 },
@@ -309,10 +311,10 @@ namespace proba
                 { 0, 0, 0, 0 }
             }
             };
-            RotationIndex = 0;
+            IndeksRotacije = 0;
             X = 0;
             Y = 0;
-            Color = GetRandomColor();
+            Boja = BirajRandomBoju();
         }
     }
 }

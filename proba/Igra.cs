@@ -9,125 +9,125 @@ namespace proba
 {
     public class Igra
     {
-        private int[,] board;
-        public Figura CurrentFigura { get; private set; }
+        private int[,] tabla;
+        public Figura TrenutnaFigura { get; private set; }
         private Random random;
-        public int CurrentScore { get; private set; }
+        public int TrenutniRezultat { get; private set; }
 
         public Igra(int width, int height)
         {
-            board = new int[height, width];
+            tabla = new int[height, width];
             random = new Random();
-            SpawnNewFigure();
-            CurrentScore = 0;
+            GenerisiNovuFiguru();
+            TrenutniRezultat = 0;
         }
 
-        public int[,] GetBoardState()
+        public int[,] ProveriStanjeTable()
         {
-            int[,] state = (int[,])board.Clone();
-            if (CurrentFigura != null)
+            int[,] stanje = (int[,])tabla.Clone();
+            if (TrenutnaFigura != null)
             {
-                var shape = CurrentFigura.Shape;
-                for (int x = 0; x < shape.GetLength(0); x++)
+                var figura = TrenutnaFigura.Oblik;
+                for (int x = 0; x < figura.GetLength(0); x++)
                 {
-                    for (int y = 0; y < shape.GetLength(1); y++)
+                    for (int y = 0; y < figura.GetLength(1); y++)
                     {
-                        if (shape[x, y] != 0)
+                        if (figura[x, y] != 0)
                         {
-                            state[CurrentFigura.X + x, CurrentFigura.Y + y] = 1;
+                            stanje[TrenutnaFigura.X + x, TrenutnaFigura.Y + y] = 1;
                         }
                     }
                 }
             }
-            return state;
+            return stanje;
         }
 
-        public void SpawnNewFigure()
+        public void GenerisiNovuFiguru()
         {
             switch (random.Next(7))
             {
                 case 0:
-                    CurrentFigura = new FiguraI();
+                    TrenutnaFigura = new FiguraI();
                     break;
                 case 1:
-                    CurrentFigura = new FiguraJ();
+                    TrenutnaFigura = new FiguraJ();
                     break;
                 case 2:
-                    CurrentFigura = new FiguraL();
+                    TrenutnaFigura = new FiguraL();
                     break;
                 case 3:
-                    CurrentFigura = new FiguraO();
+                    TrenutnaFigura = new FiguraO();
                     break;
                 case 4:
-                    CurrentFigura = new FiguraS();
+                    TrenutnaFigura = new FiguraS();
                     break;
                 case 5:
-                    CurrentFigura = new FiguraT();
+                    TrenutnaFigura = new FiguraT();
                     break;
                 case 6:
-                    CurrentFigura = new FiguraZ();
+                    TrenutnaFigura = new FiguraZ();
                     break;
             }
         }
 
-        public void MoveCurrentFigureDown()
+        public void PomeriTrenutnuFiguruDole()
         {
-            if (CurrentFigura != null)
+            if (TrenutnaFigura != null)
             {
-                CurrentFigura.X += 1;
-                if (!IsValidPosition(CurrentFigura))
+                TrenutnaFigura.X += 1;
+                if (!IsValidPosition(TrenutnaFigura))
                 {
-                    CurrentFigura.X -= 1;
-                    MergeCurrentFigure();
-                    SpawnNewFigure();
-                    CurrentScore += 4; // Dodajemo 4 poena kada figura dodje do dna
+                    TrenutnaFigura.X -= 1;
+                    ZalepiTrenutnuFiguru();
+                    GenerisiNovuFiguru();
+                    TrenutniRezultat += 4; // Dodajemo 4 poena kada figura dodje do dna
                 }
             }
         }
 
         public void MoveCurrentFigureLeft()
         {
-            if (CurrentFigura != null)
+            if (TrenutnaFigura != null)
             {
-                CurrentFigura.Y -= 1;
-                if (!IsValidPosition(CurrentFigura))
+                TrenutnaFigura.Y -= 1;
+                if (!IsValidPosition(TrenutnaFigura))
                 {
-                    CurrentFigura.Y += 1;
+                    TrenutnaFigura.Y += 1;
                 }
             }
         }
 
         public void MoveCurrentFigureRight()
         {
-            if (CurrentFigura != null)
+            if (TrenutnaFigura != null)
             {
-                CurrentFigura.Y += 1;
-                if (!IsValidPosition(CurrentFigura))
+                TrenutnaFigura.Y += 1;
+                if (!IsValidPosition(TrenutnaFigura))
                 {
-                    CurrentFigura.Y -= 1;
+                    TrenutnaFigura.Y -= 1;
                 }
             }
         }
 
         public void RotateCurrentFigure()
         {
-            if (CurrentFigura != null)
+            if (TrenutnaFigura != null)
             {
-                CurrentFigura.Rotate(); 
-                if (!IsValidPosition(CurrentFigura))
+                TrenutnaFigura.Rotate(); 
+                if (!IsValidPosition(TrenutnaFigura))
                 {
                     // Rollback rotation
-                    for (int i = 0; i < 3; i++) CurrentFigura.Rotate();
+                    for (int i = 0; i < 3; i++) TrenutnaFigura.Rotate();
                 }
             }
         }
         public bool IsGameOver()
         {
-            return !IsValidPosition(CurrentFigura);
+            return !IsValidPosition(TrenutnaFigura);
         }
         private bool IsValidPosition(Figura figure)
         {
-            var shape = figure.Shape;
+            var shape = figure.Oblik;
             for (int x = 0; x < shape.GetLength(0); x++)
             {
                 for (int y = 0; y < shape.GetLength(1); y++)
@@ -136,7 +136,7 @@ namespace proba
                     {
                         int newX = figure.X + x;
                         int newY = figure.Y + y;
-                        if (newX < 0 || newX >= board.GetLength(0) || newY < 0 || newY >= board.GetLength(1) || board[newX, newY] != 0)
+                        if (newX < 0 || newX >= tabla.GetLength(0) || newY < 0 || newY >= tabla.GetLength(1) || tabla[newX, newY] != 0)
                         {
                             return false;
                         }
@@ -146,16 +146,16 @@ namespace proba
             return true;
         }
 
-        private void MergeCurrentFigure()
+        private void ZalepiTrenutnuFiguru()
         {
-            var shape = CurrentFigura.Shape;
-            for (int x = 0; x < shape.GetLength(0); x++)
+            var figura = TrenutnaFigura.Oblik;
+            for (int x = 0; x < figura.GetLength(0); x++)
             {
-                for (int y = 0; y < shape.GetLength(1); y++)
+                for (int y = 0; y < figura.GetLength(1); y++)
                 {
-                    if (shape[x, y] != 0)
+                    if (figura[x, y] != 0)
                     {
-                        board[CurrentFigura.X + x, CurrentFigura.Y + y] = 1;
+                        tabla[TrenutnaFigura.X + x, TrenutnaFigura.Y + y] = 1;
                     }
                 }
             }
@@ -164,12 +164,12 @@ namespace proba
 
         private void ClearFullLines()
         {
-            for (int x = 0; x < board.GetLength(0); x++)
+            for (int x = 0; x < tabla.GetLength(0); x++)
             {
                 bool isFull = true;
-                for (int y = 0; y < board.GetLength(1); y++)
+                for (int y = 0; y < tabla.GetLength(1); y++)
                 {
-                    if (board[x, y] == 0)
+                    if (tabla[x, y] == 0)
                     {
                         isFull = false;
                         break;
@@ -180,16 +180,16 @@ namespace proba
                     // Clear the line
                     for (int i = x; i > 0; i--)
                     {
-                        for (int j = 0; j < board.GetLength(1); j++)
+                        for (int j = 0; j < tabla.GetLength(1); j++)
                         {
-                            board[i, j] = board[i - 1, j];
+                            tabla[i, j] = tabla[i - 1, j];
                         }
                     }
-                    for (int j = 0; j < board.GetLength(1); j++)
+                    for (int j = 0; j < tabla.GetLength(1); j++)
                     {
-                        board[0, j] = 0;
+                        tabla[0, j] = 0;
                     }
-                    CurrentScore += 10; // Dodajemo 10 poena kada se izbrise red
+                    TrenutniRezultat += 10; // Dodajemo 10 poena kada se izbrise red
                     x++; // Ponovo proveravamo istu liniju jer smo je pomerili
                 }
             }
