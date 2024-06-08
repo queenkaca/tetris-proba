@@ -12,12 +12,14 @@ namespace proba
         private int[,] board;
         public Figura CurrentFigura { get; private set; }
         private Random random;
+        public int CurrentScore { get; private set; }
 
         public Igra(int width, int height)
         {
             board = new int[height, width];
             random = new Random();
             SpawnNewFigure();
+            CurrentScore = 0;
         }
 
         public int[,] GetBoardState()
@@ -78,6 +80,7 @@ namespace proba
                     CurrentFigura.X -= 1;
                     MergeCurrentFigure();
                     SpawnNewFigure();
+                    CurrentScore += 4; // Dodajemo 4 poena kada figura dodje do dna
                 }
             }
         }
@@ -118,7 +121,10 @@ namespace proba
                 }
             }
         }
-
+        public bool IsGameOver()
+        {
+            return !IsValidPosition(CurrentFigura);
+        }
         private bool IsValidPosition(Figura figure)
         {
             var shape = figure.Shape;
@@ -183,6 +189,8 @@ namespace proba
                     {
                         board[0, j] = 0;
                     }
+                    CurrentScore += 10; // Dodajemo 10 poena kada se izbrise red
+                    x++; // Ponovo proveravamo istu liniju jer smo je pomerili
                 }
             }
         }
