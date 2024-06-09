@@ -15,32 +15,30 @@ namespace proba
     {
         private Igra igra;
         private Rezultat rezultat;
-        private const int boardWidth = 10;
-        private const int boardHeight = 20;
-        private const int cellSize = 30;
+        private const int sirinaTable = 10;
+        private const int visinaTable = 20;
+        private const int velicinaKvadrata = 30;
         private SoundPlayer soundPlayer;
         public Form1()
         {
             InitializeComponent();
-            igra = new Igra(boardWidth, boardHeight);
+            igra = new Igra(sirinaTable, visinaTable);
             timer1.Interval = 600;
             timer1.Start();
             this.KeyDown += new KeyEventHandler(Form1_KeyDown);
             this.ClientSize = new Size(600, 600);
             rezultat = new Rezultat();
             this.Text = "Lo-Fi Tetris";
-            this.BackgroundImage = Properties.Resources.lofi1; // Ovde zamenite sa stvarnim imenom slike
-            this.BackgroundImageLayout = ImageLayout.Center; // Prilagodite po potrebi (Stretch, Tile, Center, Zoom, None)
+            this.BackgroundImage = Properties.Resources.lofi1; 
+            this.BackgroundImageLayout = ImageLayout.Center; 
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
             this.Focus();
 
-            // Initialize the SoundPlayer with the path to the audio filee
             soundPlayer = new SoundPlayer(@"music.wav");
 
-            // Play the sound in a loop
             soundPlayer.PlayLooping();
         }
 
@@ -49,16 +47,16 @@ namespace proba
             switch (e.KeyCode)
             {
                 case Keys.Left:
-                    igra.MoveCurrentFigureLeft();
+                    igra.PomeriTrenutnuFigruLevo();
                     break;
                 case Keys.Right:
-                    igra.MoveCurrentFigureRight();
+                    igra.PomeriTrenutnuFigruDesno();
                     break;
                 case Keys.Down:
                     igra.PomeriTrenutnuFiguruDole();
                     break;
                 case Keys.Up:
-                    igra.RotateCurrentFigure();
+                    igra.RotirajTrenutnuFiguru();
                     break;
             }
             Invalidate();
@@ -66,7 +64,7 @@ namespace proba
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            if (!igra.IsGameOver())
+            if (!igra.KrajIgre())
             {
                 igra.PomeriTrenutnuFiguruDole();
                 label5.Text = igra.TrenutniRezultat.ToString();
@@ -96,28 +94,33 @@ namespace proba
             Color fallenFigureColor = ColorTranslator.FromHtml("#584E66");
 
             // Crtanje pozadine
-            e.Graphics.FillRectangle(new SolidBrush(backgroundColor), 0, 0, boardWidth * cellSize, boardHeight * cellSize);
+            e.Graphics.FillRectangle(new SolidBrush(backgroundColor), 0, 0,
+                sirinaTable * velicinaKvadrata, visinaTable * velicinaKvadrata);
             // Crtanje grida
-            for (int x = 0; x <= boardWidth; x++)
+            for (int x = 0; x <= sirinaTable; x++)
             {
-                e.Graphics.DrawLine(new Pen(gridColor), x * cellSize, 0, x * cellSize, boardHeight * cellSize);
+                e.Graphics.DrawLine(new Pen(gridColor), x * velicinaKvadrata, 0,
+                    x * velicinaKvadrata, visinaTable * velicinaKvadrata);
             }
 
-            for (int y = 0; y <= boardHeight; y++)
+            for (int y = 0; y <= visinaTable; y++)
             {
-                e.Graphics.DrawLine(new Pen(gridColor), 0, y * cellSize, boardWidth * cellSize, y * cellSize);
+                e.Graphics.DrawLine(new Pen(gridColor), 0, y * velicinaKvadrata,
+                    sirinaTable * velicinaKvadrata, y * velicinaKvadrata);
             }
 
             // Crtanje trenutnog stanja table
             int[,] board = igra.ProveriStanjeTable();
-            for (int x = 0; x < boardHeight; x++)
+            for (int x = 0; x < visinaTable; x++)
             {
-                for (int y = 0; y < boardWidth; y++)
+                for (int y = 0; y < sirinaTable; y++)
                 {
                     if (board[x, y] != 0)
                     {
-                        e.Graphics.FillRectangle(new SolidBrush(fallenFigureColor), y * cellSize, x * cellSize, cellSize, cellSize);
-                        e.Graphics.DrawRectangle(new Pen(gridColor), y * cellSize, x * cellSize, cellSize, cellSize);
+                        e.Graphics.FillRectangle(new SolidBrush(fallenFigureColor), y * velicinaKvadrata,
+                            x * velicinaKvadrata, velicinaKvadrata, velicinaKvadrata);
+                        e.Graphics.DrawRectangle(new Pen(gridColor), y * velicinaKvadrata, x * velicinaKvadrata,
+                            velicinaKvadrata, velicinaKvadrata);
                     }
                 }
             }
@@ -133,10 +136,10 @@ namespace proba
                     {
                         if (shape[x, y] != 0)
                         {
-                            e.Graphics.FillRectangle(new SolidBrush(color), (igra.TrenutnaFigura.Y + y) * cellSize, 
-                                (igra.TrenutnaFigura.X + x) * cellSize, cellSize, cellSize);
-                            e.Graphics.DrawRectangle(new Pen(gridColor), (igra.TrenutnaFigura.Y + y) * cellSize,
-                                (igra.TrenutnaFigura.X + x) * cellSize, cellSize, cellSize);
+                            e.Graphics.FillRectangle(new SolidBrush(color), (igra.TrenutnaFigura.Y + y) * velicinaKvadrata, 
+                                (igra.TrenutnaFigura.X + x) * velicinaKvadrata, velicinaKvadrata, velicinaKvadrata);
+                            e.Graphics.DrawRectangle(new Pen(gridColor), (igra.TrenutnaFigura.Y + y) * velicinaKvadrata,
+                                (igra.TrenutnaFigura.X + x) * velicinaKvadrata, velicinaKvadrata, velicinaKvadrata);
                         }
                     }
                 }
@@ -160,7 +163,7 @@ namespace proba
 
         private void button1_Click(object sender, EventArgs e)
         {
-            igra = new Igra(boardWidth, boardHeight);
+            igra = new Igra(sirinaTable, visinaTable);
             timer1.Interval = 500;
             timer1.Start();
             // Ukloni dugme za ponovno pokretanje

@@ -41,9 +41,9 @@ namespace proba
             }
         }
 
-        public void Rotate()
+        public void Rotiraj()
         {
-            IndeksRotacije = (IndeksRotacije + 1) % 4;
+            IndeksRotacije = (IndeksRotacije  %3 + 1)%4 ;
         }
 
         protected static Color BirajRandomBoju()
@@ -266,6 +266,7 @@ namespace proba
                 { 0, -1, 0, 0 },
                 { 0, 0, 0, 0 }
             },
+            
             {
                 { 0, -1, 0, 0 },
                 { -1, -1, 0, 0 },

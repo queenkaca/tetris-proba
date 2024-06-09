@@ -75,7 +75,7 @@ namespace proba
             if (TrenutnaFigura != null)
             {
                 TrenutnaFigura.X += 1;
-                if (!IsValidPosition(TrenutnaFigura))
+                if (!ValidnaPozicija(TrenutnaFigura))
                 {
                     TrenutnaFigura.X -= 1;
                     ZalepiTrenutnuFiguru();
@@ -85,58 +85,57 @@ namespace proba
             }
         }
 
-        public void MoveCurrentFigureLeft()
+        public void PomeriTrenutnuFigruLevo()
         {
             if (TrenutnaFigura != null)
             {
                 TrenutnaFigura.Y -= 1;
-                if (!IsValidPosition(TrenutnaFigura))
+                if (!ValidnaPozicija(TrenutnaFigura))
                 {
                     TrenutnaFigura.Y += 1;
                 }
             }
         }
 
-        public void MoveCurrentFigureRight()
+        public void PomeriTrenutnuFigruDesno()
         {
             if (TrenutnaFigura != null)
             {
                 TrenutnaFigura.Y += 1;
-                if (!IsValidPosition(TrenutnaFigura))
+                if (!ValidnaPozicija(TrenutnaFigura))
                 {
                     TrenutnaFigura.Y -= 1;
                 }
             }
         }
 
-        public void RotateCurrentFigure()
+        public void RotirajTrenutnuFiguru()
         {
             if (TrenutnaFigura != null)
             {
-                TrenutnaFigura.Rotate(); 
-                if (!IsValidPosition(TrenutnaFigura))
+                TrenutnaFigura.Rotiraj(); 
+                if (!ValidnaPozicija(TrenutnaFigura))
                 {
-                    // Rollback rotation
-                    for (int i = 0; i < 3; i++) TrenutnaFigura.Rotate();
+                    for (int i = 0; i < 3; i++) TrenutnaFigura.Rotiraj();
                 }
             }
         }
-        public bool IsGameOver()
+        public bool KrajIgre()
         {
-            return !IsValidPosition(TrenutnaFigura);
+            return !ValidnaPozicija(TrenutnaFigura);
         }
-        private bool IsValidPosition(Figura figure)
+        private bool ValidnaPozicija(Figura figure)
         {
-            var shape = figure.Oblik;
-            for (int x = 0; x < shape.GetLength(0); x++)
+            var figura = figure.Oblik;
+            for (int x = 0; x < figura.GetLength(0); x++)
             {
-                for (int y = 0; y < shape.GetLength(1); y++)
+                for (int y = 0; y < figura.GetLength(1); y++)
                 {
-                    if (shape[x, y] != 0)
+                    if (figura[x, y] != 0)
                     {
-                        int newX = figure.X + x;
-                        int newY = figure.Y + y;
-                        if (newX < 0 || newX >= tabla.GetLength(0) || newY < 0 || newY >= tabla.GetLength(1) || tabla[newX, newY] != 0)
+                        int noviX = figure.X + x;
+                        int noviY = figure.Y + y;
+                        if (noviX < 0 || noviX >= tabla.GetLength(0) || noviY < 0 || noviY >= tabla.GetLength(1) || tabla[noviX, noviY] != 0)
                         {
                             return false;
                         }
@@ -159,25 +158,25 @@ namespace proba
                     }
                 }
             }
-            ClearFullLines();
+            SkloniPuneRedove();
         }
 
-        private void ClearFullLines()
+        private void SkloniPuneRedove()
         {
             for (int x = 0; x < tabla.GetLength(0); x++)
             {
-                bool isFull = true;
+                bool pun = true;
                 for (int y = 0; y < tabla.GetLength(1); y++)
                 {
                     if (tabla[x, y] == 0)
                     {
-                        isFull = false;
+                        pun = false;
                         break;
                     }
                 }
-                if (isFull)
+                if (pun)
                 {
-                    // Clear the line
+                    // Skloni red
                     for (int i = x; i > 0; i--)
                     {
                         for (int j = 0; j < tabla.GetLength(1); j++)
